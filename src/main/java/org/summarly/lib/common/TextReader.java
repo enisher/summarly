@@ -1,5 +1,8 @@
 package org.summarly.lib.common;
 
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.extractors.ArticleExtractor;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,5 +43,17 @@ public class TextReader {
             throw new RuntimeException(e);
         }
         return builder.toString();
+    }
+
+    public String readTextFromURL(String url) {
+        String res;
+
+        try {
+            res = ArticleExtractor.getInstance().getText(new URL(url));
+        } catch (IOException | BoilerpipeProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return res;
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.summarly.common.TextReader;
+import org.summarly.lib.common.TextReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.summarly.lib.SummarizationService;
 
@@ -26,21 +26,21 @@ public class SummarlyApiController {
 
         return summarize(text);
     }
-    
+
     @RequestMapping(value = "/url", method = RequestMethod.POST)
     public String summarizeURL(@RequestParam(required = true) String url) {
         log.info("Received article url: " + url);
 
         TextReader reader = new TextReader();
-		String articleText = reader.readTextFromURL(url);
+        String articleText = reader.readTextFromURL(url);
 
         return summarize(articleText);
     }
 
     private String summarize(String originalText) {
 
-    	// TODO: Summarize received text
+        // TODO: Summarize received text
 
-    	return originalText;
+        return originalText;
     }
 }

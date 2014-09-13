@@ -1,15 +1,13 @@
-package org.summarly.common;
+package org.summarly.lib.common;
 
 import org.junit.Test;
-import org.summarly.common.TextReaderTest;
 
 import java.net.URL;
-import java.util.List;
 
 import junit.framework.Assert;
 
 public class TextReaderTest {
-    
+
     @Test
     public void testGetTextFromURL() throws Exception {
 
@@ -18,5 +16,5 @@ public class TextReaderTest {
 
         Assert.assertNotNull(s);
     }
-    
+
 }
