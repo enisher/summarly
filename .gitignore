@@ -1,8 +1,3 @@
-*.prefs
-*.class
-*.classpath
-*.project
-*.MF
-*.lst
-*.war
-*.jar
+*.iml
+.idea/
+target/
