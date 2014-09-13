@@ -55,12 +55,13 @@ public class LuceneSplitter implements TextSplitter {
 
     @Override
     public Text split(String text, String name) {
-        String sentence = text; //TODO separate sentences
 
         ArrayList<Sentence> sentences = new ArrayList<>();
-        Sentence aSentence = new Sentence(sentence);
-        aSentence.setWords(extractNormalizedTokens(text, new RussianAnalyzer(Version.LUCENE_4_9)));
-        sentences.add(aSentence);
+        for (String sentence : splitTextOnSentences(text)) {
+            Sentence aSentence = new Sentence(sentence);
+            aSentence.setWords(extractNormalizedTokens(text, new RussianAnalyzer(Version.LUCENE_4_9)));
+            sentences.add(aSentence);
+        }
 
         Text theText = new Text(text);
         theText.setSentences(sentences);
