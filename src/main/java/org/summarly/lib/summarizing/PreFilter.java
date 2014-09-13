@@ -1,6 +1,8 @@
 package org.summarly.lib.summarizing;
 
-import org.apache.commons.lang3.StringUtils;
+//
+
+import org.springframework.util.StringUtils;
 
 /**
  * Created by vaz on 9/13/2014.
@@ -8,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 public class PreFilter {
 
     public String filterBrackets(String text) {
-        return StringUtils.strip(text, "(){}[]<>");
+        String res = StringUtils.deleteAny(text, "(){}[]<>");
+        return res;
     }
 }
