@@ -20,14 +20,14 @@ public class SummarlyApiController {
     @Autowired
     private SummarizationService summarizationService;
 
-    @RequestMapping(value = "/text", method = RequestMethod.POST)
+    @RequestMapping(value = "/text", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String summarizeText(@RequestParam(required = true) String text) {
         log.info("Received article text: " + text);
 
         return summarize(text);
     }
 
-    @RequestMapping(value = "/url", method = RequestMethod.POST)
+    @RequestMapping(value = "/url", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public String summarizeURL(@RequestParam(required = true) String url) {
         log.info("Received article url: " + url);
 

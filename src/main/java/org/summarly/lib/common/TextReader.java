@@ -49,7 +49,8 @@ public class TextReader {
         String res;
 
         try {
-            res = ArticleExtractor.getInstance().getText(new URL(url));
+            ArticleExtractor articleExtractor = ArticleExtractor.getInstance();
+            res = articleExtractor.getText(new URL(url));
         } catch (IOException | BoilerpipeProcessingException e) {
             throw new RuntimeException(e);
         }

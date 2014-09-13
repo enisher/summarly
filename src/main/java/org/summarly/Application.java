@@ -2,9 +2,14 @@ package org.summarly;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.MimeMappings;
+import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.summarly.lib.LexRankSummarizationService;
 import org.summarly.lib.SummarizationService;
 
