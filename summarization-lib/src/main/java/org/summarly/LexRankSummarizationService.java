@@ -4,11 +4,13 @@ import org.summarly.common.RankedSentence;
 import org.summarly.common.Text;
 import org.summarly.segmentation.StanfordNLPSplitter;
 import org.summarly.segmentation.TextSplitter;
+import org.summarly.summarizing.Filter;
 import org.summarly.summarizing.LexRankRanker;
 import org.summarly.summarizing.Ranker;
 
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Created by Anton Chernetskij
@@ -18,10 +20,12 @@ public class LexRankSummarizationService implements SummarizationService {
     private static final Logger LOGGER = Logger.getLogger(LexRankSummarizationService.class.getName());
     private Ranker ranker;
     private TextSplitter splitter;
+    private Filter filter;
 
     public LexRankSummarizationService() {
         splitter = new StanfordNLPSplitter();
         ranker = new LexRankRanker();
+        filter = new Filter();
     }
 
     public Ranker getRanker() {
@@ -52,6 +56,8 @@ public class LexRankSummarizationService implements SummarizationService {
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
-        return null;
+        return filter.filter(summary, ratio)
+                .stream().map(p -> p.getSentence().getSentence())
+                .collect(Collectors.<String>toList());
     }
 }

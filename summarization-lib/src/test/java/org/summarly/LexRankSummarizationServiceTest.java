@@ -3,6 +3,8 @@ package org.summarly;
 import org.junit.Test;
 import org.summarly.common.TextReader;
 
+import java.util.List;
+
 /**
  * Created by Anton Chernetskij
  */
@@ -13,7 +15,10 @@ public class LexRankSummarizationServiceTest {
         TextReader reader = new TextReader();
         String s = reader.readText("src/test/resources/Hoverberget.txt");
 
-        LexRankSummarizationService pipeline = new LexRankSummarizationService();
-        pipeline.summarise(s, 0.5);
+        LexRankSummarizationService summarizer = new LexRankSummarizationService();
+        List<String> summary = summarizer.summarise(s, 0.5);
+        for (String sentence : summary) {
+            System.out.println(sentence);
+        }
     }
 }
