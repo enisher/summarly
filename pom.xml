@@ -146,4 +146,13 @@
         </plugins>
     </build>
 
+    <repositories>
+        <!--other repositories if any-->
+        <repository>
+            <id>local.maven.repository</id>
+            <name>summarly</name>
+            <url>file:${project.basedir}/local-maven-repo</url>
+        </repository>
+    </repositories>
+
 </project>
