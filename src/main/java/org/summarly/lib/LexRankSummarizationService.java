@@ -7,7 +7,7 @@ import org.summarly.lib.segmentation.StanfordNLPSplitter;
 import org.summarly.lib.segmentation.TextSplitter;
 import org.summarly.lib.summarizing.Filter;
 import org.summarly.lib.summarizing.LexRankRanker;
-import org.summarly.lib.summarizing.RankModifier;
+import org.summarly.lib.summarizing.modifiers.RankModifier;
 import org.summarly.lib.summarizing.Ranker;
 
 import java.util.Arrays;

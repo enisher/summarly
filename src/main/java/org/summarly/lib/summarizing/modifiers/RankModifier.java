@@ -1,4 +1,4 @@
-package org.summarly.lib.summarizing;
+package org.summarly.lib.summarizing.modifiers;
 
 import org.summarly.lib.common.RankedSentence;
 
