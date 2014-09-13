@@ -10,6 +10,10 @@ public class RankedSentence implements Comparable<RankedSentence> {
         this.sentence = sentence;
     }
 
+    public void setRank(double rank) {
+        this.rank = rank;
+    }
+
     public double getRank() {
         return rank;
     }
