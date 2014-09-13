@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.summarly.common.TextReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.summarly.lib.SummarizationService;
-import org.summarly.model.ArticleModel;
 
 @RestController
-@RequestMapping(value = "summarly-api")
+@RequestMapping(value = "/summarly-api/summarize")
 public class SummarlyApiController {
 
     private static final Logger log = LoggerFactory.getLogger(SummarlyApiController.class);
@@ -22,24 +20,27 @@ public class SummarlyApiController {
     @Autowired
     private SummarizationService summarizationService;
 
-    @RequestMapping(value = "/summarizeText", method = RequestMethod.POST)
-    public String summarizeText(@RequestParam String articleText) {
-        log.info("Received article text: " + articleText);
-        return summarize(articleText);
+    @RequestMapping(value = "/text", method = RequestMethod.POST)
+    public String summarizeText(@RequestParam(required = true) String text) {
+        log.info("Received article text: " + text);
+
+        return summarize(text);
     }
     
-    @RequestMapping(value = "/summarizeURL", method = RequestMethod.POST)
-    public String summarizeURL(@RequestParam String articleURL) {
-        log.info("Received article URL: " + articleURL);
+    @RequestMapping(value = "/url", method = RequestMethod.POST)
+    public String summarizeURL(@RequestParam(required = true) String url) {
+        log.info("Received article url: " + url);
+
         TextReader reader = new TextReader();
-		String articleText = reader.readTextFromURL(articleURL);
+		String articleText = reader.readTextFromURL(url);
+
         return summarize(articleText);
     }
-    
-    private String summarize(String originalText){
-    	
+
+    private String summarize(String originalText) {
+
     	// TODO: Summarize received text
-    	
+
     	return originalText;
     }
 }
