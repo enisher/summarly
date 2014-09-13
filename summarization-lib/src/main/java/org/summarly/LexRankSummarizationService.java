@@ -13,29 +13,15 @@ import java.util.logging.Logger;
 /**
  * Created by Anton Chernetskij
  */
-public class ApplicationPipeline {
+public class LexRankSummarizationService implements SummarizationService {
 
-    private static final Logger LOGGER = Logger.getLogger(ApplicationPipeline.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LexRankSummarizationService.class.getName());
     private Ranker ranker;
     private TextSplitter splitter;
 
-    public ApplicationPipeline() {
+    public LexRankSummarizationService() {
         splitter = new StanfordNLPSplitter();
         ranker = new LexRankRanker();
-    }
-
-    public void process(String s, String name) {
-        LOGGER.info("Starting \"" + name + "\" processing.");
-        long start = System.currentTimeMillis();
-        Text text = splitter.split(s, name);
-        if (text.numSentences() < 6) {
-            throw new RuntimeException("The text is too small to apply extractive summary");
-        }
-
-        List<RankedSentence> summary = ranker.rank(text);
-        long finish = System.currentTimeMillis();
-        LOGGER.info(String.format(
-                "Processed text %s of %d sentences in %d ms", name, text.numSentences(), (finish - start)));
     }
 
     public Ranker getRanker() {
@@ -52,5 +38,20 @@ public class ApplicationPipeline {
 
     public void setSplitter(TextSplitter splitter) {
         this.splitter = splitter;
+    }
+
+    public List<String> summarise(String s, double ratio) {
+        long start = System.currentTimeMillis();
+        Text text = splitter.split(s, "");
+        if (text.numSentences() < 6) {
+            throw new RuntimeException("The text is too small to apply extractive summary");
+        }
+
+        List<RankedSentence> summary = ranker.rank(text);
+        long finish = System.currentTimeMillis();
+        LOGGER.info(String.format(
+                "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
+
+        return null;
     }
 }

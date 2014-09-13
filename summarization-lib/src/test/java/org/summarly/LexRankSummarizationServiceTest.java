@@ -6,14 +6,14 @@ import org.summarly.common.TextReader;
 /**
  * Created by Anton Chernetskij
  */
-public class ApplicationPipelineTest {
+public class LexRankSummarizationServiceTest {
     @Test
     public void testProcess() throws Exception {
 
         TextReader reader = new TextReader();
         String s = reader.readText("src/test/resources/Hoverberget.txt");
 
-        ApplicationPipeline pipeline = new ApplicationPipeline();
-        pipeline.process(s, "Hoverberget");
+        LexRankSummarizationService pipeline = new LexRankSummarizationService();
+        pipeline.summarise(s, 0.5);
     }
 }
