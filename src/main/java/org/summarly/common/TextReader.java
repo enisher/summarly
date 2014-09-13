@@ -1,12 +1,13 @@
 package org.summarly.common;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Scanner;
+
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
 /**
  * Created by Anton Chernetskij
@@ -27,18 +28,15 @@ public class TextReader {
         return builder.toString();
     }
     
-    public String readText(URL url) {
-        StringBuilder builder = new StringBuilder();
+    public String readTextFromURL(String url) {
+        String res = null;
         try {
-            BufferedReader in = new BufferedReader(
-            		new InputStreamReader(url.openStream(), "UTF-8"));
-            Scanner scanner = new Scanner(in);
-            while (scanner.hasNextLine()) {
-                builder.append(scanner.nextLine()).append("\n");
-            }
+            res =  ArticleExtractor.getInstance().getText(new URL(url));
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-        return builder.toString();
+        } catch (BoilerpipeProcessingException ex) {
+        	throw new RuntimeException(ex);
+		}
+        return res;
     }
 }
