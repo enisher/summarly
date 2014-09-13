@@ -99,7 +99,7 @@
                 })
             } else {
                 $.ajax({
-                    url: '/text',
+                    url: '/summary',
                     type: 'post',
                     data: { text: $('textarea[name=text]').val() },
                     success: function (htmlData) {

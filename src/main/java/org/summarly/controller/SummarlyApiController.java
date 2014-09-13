@@ -4,6 +4,7 @@ package org.summarly.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,11 +24,14 @@ public class SummarlyApiController {
     @Autowired
     private SummarizationService summarizationService;
 
-    @RequestMapping(value = "/text", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
-    public String summarizeText(@RequestParam(required = true) String text) {
+    @RequestMapping(value = "/summary", method = RequestMethod.POST)
+    public ModelAndView summarizeText(@RequestParam(required = true) String text) {
         log.info("Received article text: " + text);
 
-        return summarize(text);
+        ModelAndView modelAndView = new ModelAndView("summary");
+        modelAndView.addObject("body", summarize(text));
+
+        return modelAndView;
     }
 
     @RequestMapping(value = "/summary", method = RequestMethod.GET)
@@ -39,15 +43,15 @@ public class SummarlyApiController {
 
         ModelAndView modelAndView = new ModelAndView("summary");
         modelAndView.addObject("body", summarize(articleText));
+
         return modelAndView;
     }
 
     private String summarize(String originalText) {
         List<String> summary = summarizationService.summarise(originalText, 0.5);
         StringBuilder builder = new StringBuilder();
-        for (String s : summary) {
-            builder.append(s).append(" ");
-        }
+        summary.stream().forEach(s -> builder.append(s).append(" "));
+
         return builder.toString();
     }
 }
