@@ -11,6 +11,8 @@ import org.summarly.lib.common.TextReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.summarly.lib.SummarizationService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/summarly-api/summarize")
 public class SummarlyApiController {
@@ -38,9 +40,11 @@ public class SummarlyApiController {
     }
 
     private String summarize(String originalText) {
-
-        // TODO: Summarize received text
-
-        return originalText;
+        List<String> summary = summarizationService.summarise(originalText, 0.5);
+        StringBuilder builder = new StringBuilder();
+        for (String s : summary) {
+            builder.append(s).append(" ");
+        }
+        return builder.toString();
     }
 }
