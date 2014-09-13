@@ -1,5 +1,6 @@
 package org.summarly.lib.segmentation;
 
+import com.ibm.icu.text.BreakIterator;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
@@ -11,10 +12,24 @@ import org.summarly.lib.common.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  */
 public class LuceneSplitter implements TextSplitter {
+
+    public List<String> splitTextOnSentences(String text) {
+        ArrayList<String> sentences = new ArrayList<>();
+        BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
+        iterator.setText(text);
+        int start = iterator.first();
+        for (int end = iterator.next();
+             end != BreakIterator.DONE;
+             start = end, end = iterator.next()) {
+             sentences.add(text.substring(start, end));
+        }
+        return sentences;
+    }
 
     public List<String> splitSentence(String text) throws IOException {
         final Analyzer analyzer;
@@ -40,12 +55,13 @@ public class LuceneSplitter implements TextSplitter {
 
     @Override
     public Text split(String text, String name) {
-        String sentence = text; //TODO separate sentences
 
         ArrayList<Sentence> sentences = new ArrayList<>();
-        Sentence aSentence = new Sentence(sentence);
-        aSentence.setWords(extractNormalizedTokens(text, new RussianAnalyzer(Version.LUCENE_4_9)));
-        sentences.add(aSentence);
+        for (String sentence : splitTextOnSentences(text)) {
+            Sentence aSentence = new Sentence(sentence);
+            aSentence.setWords(extractNormalizedTokens(sentence, new RussianAnalyzer(Version.LUCENE_4_9)));
+            sentences.add(aSentence);
+        }
 
         Text theText = new Text(text);
         theText.setSentences(sentences);
