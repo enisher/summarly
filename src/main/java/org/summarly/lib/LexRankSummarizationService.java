@@ -21,12 +21,12 @@ public class LexRankSummarizationService implements SummarizationService {
 
     private static final Logger LOGGER = Logger.getLogger(LexRankSummarizationService.class.getName());
     private Ranker ranker;
-    private TextSplitter splitter;
+    private TextSplitter enSplitter;
     private Filter filter;
     private List<RankModifier> rankModifiers;
 
     public LexRankSummarizationService() {
-        splitter = new StanfordNLPSplitter();
+        enSplitter = new StanfordNLPSplitter();
         ranker = new LexRankRanker();
         filter = new Filter();
         rankModifiers = Arrays.<RankModifier>asList(text -> text);
@@ -34,7 +34,10 @@ public class LexRankSummarizationService implements SummarizationService {
 
     public List<String> summarise(String s, double ratio) {
         long start = System.currentTimeMillis();
-        Text text = splitter.split(s, "");
+        Text text;
+        text = enSplitter.split(s, "");
+//        text = ruSplitter.split(s, "");
+
         if (text.numSentences() < 6) {
             throw new RuntimeException("The text is too small to apply extractive summary");
         }
@@ -67,10 +70,10 @@ public class LexRankSummarizationService implements SummarizationService {
     }
 
     public TextSplitter getSplitter() {
-        return splitter;
+        return enSplitter;
     }
 
     public void setSplitter(TextSplitter splitter) {
-        this.splitter = splitter;
+        this.enSplitter = splitter;
     }
 }
