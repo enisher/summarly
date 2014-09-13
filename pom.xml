@@ -42,6 +42,10 @@
         </dependency>
         <!-- end::actuator[] -->
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -49,12 +53,13 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.8.4</version>
+            <scope>test</scope>
         </dependency>
-
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -70,6 +75,7 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/stanford-corenlp-2012-04-09.jar</systemPath>
         </dependency>
+
         <!--<dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-models</artifactId>
@@ -77,6 +83,7 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/stanford-corenlp-2012-04-09-models.jar</systemPath>
         </dependency>-->
+
         <dependency>
             <groupId>xom</groupId>
             <artifactId>xom</artifactId>
@@ -92,11 +99,28 @@
             <artifactId>lucene-core</artifactId>
             <version>4.9.0</version>
         </dependency>
+        
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
             <version>4.9.0</version>
         </dependency>
+        
+        <dependency>
+            <groupId>de.l3s.boilerpipe</groupId>
+            <artifactId>boilerpipe</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.nekohtml</groupId>
+			<artifactId>nekohtml</artifactId>
+			<version>1.9.13</version>
+		</dependency>
     </dependencies>
 
     <build>
