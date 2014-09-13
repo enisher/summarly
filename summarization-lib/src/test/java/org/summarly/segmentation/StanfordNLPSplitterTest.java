@@ -1,9 +1,9 @@
-package org.poppins.segmentation;
+package org.summarly.segmentation;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.poppins.common.Text;
-import org.poppins.common.TextReader;
+import org.summarly.common.Text;
+import org.summarly.common.TextReader;
 
 /**
  * Created by Anton Chernetskij

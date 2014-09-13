@@ -1,10 +1,11 @@
-package org.poppins.summarizing;
+package org.summarly.summarizing;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.poppins.common.Sentence;
-import org.poppins.common.Text;
+import org.summarly.common.RankedSentence;
+import org.summarly.common.Sentence;
+import org.summarly.common.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Anton Chernetskij
  */
-public class LexRankSummarizerTest extends LexRankSummarizer {
+public class LexRankRankerTest extends LexRankRanker {
 
     private String[] sentences = new String[]{
             "Iraqi Vice President Taha Yassin Ramadan announced today, Sunday, that Iraq refuses to back down from its decision to stop cooperating with disarmament inspectors before its demands are met.",
@@ -76,8 +77,8 @@ public class LexRankSummarizerTest extends LexRankSummarizer {
 
     @Test
     public void testSummarize() throws Exception {
-        LexRankSummarizer summarizer = new LexRankSummarizer();
-        List<Sentence> summary = summarizer.summarize(text, 0.3);
+        LexRankRanker summarizer = new LexRankRanker();
+        List<RankedSentence> summary = summarizer.rank(text);
         Assert.assertEquals(sentences[3], summary.get(0).getSentence());
         Assert.assertEquals(sentences[7], summary.get(1).getSentence());
         Assert.assertEquals(sentences[0], summary.get(2).getSentence());
@@ -85,7 +86,7 @@ public class LexRankSummarizerTest extends LexRankSummarizer {
 
     @Test
     public void testInverseDocumentFrequency() {
-        LexRankSummarizer summarizer = new LexRankSummarizer();
+        LexRankRanker summarizer = new LexRankRanker();
         Map<String, Double> wordFrequencies = summarizer.inverseDocumentFrequency(text);
 
         Assert.assertEquals(1.0116, wordFrequencies.get("not"), 0.0001);
@@ -96,7 +97,7 @@ public class LexRankSummarizerTest extends LexRankSummarizer {
 
     @Test
     public void testGetSimilarities() {
-        LexRankSummarizer summarizer = new LexRankSummarizer();
+        LexRankRanker summarizer = new LexRankRanker();
         double[][] similarities = filter(summarizer.getSimilarities(text), THRESHOLD);
         for (int i = 0; i < similarities.length; i++) {
             for (int j = 0; j < similarities[i].length; j++) {
@@ -107,7 +108,7 @@ public class LexRankSummarizerTest extends LexRankSummarizer {
 
     @Test
     public void testSimilarity() {
-        LexRankSummarizer summarizer = new LexRankSummarizer();
+        LexRankRanker summarizer = new LexRankRanker();
         Sentence sentence1 = text.getSentences().get(0);
         Sentence sentence2 = text.getSentences().get(1);
         Map<String, Double> idf = summarizer.inverseDocumentFrequency(text);
@@ -117,7 +118,7 @@ public class LexRankSummarizerTest extends LexRankSummarizer {
 
     @Test
     public void testRanks() {
-        LexRankSummarizer summarizer = new LexRankSummarizer();
+        LexRankRanker summarizer = new LexRankRanker();
         double[][] similarities = summarizer.getSimilarities(text);
         similarities = summarizer.filter(similarities, THRESHOLD);
         double[] actual = summarizer.calcRanks(similarities);

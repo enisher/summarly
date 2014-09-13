@@ -1,4 +1,4 @@
-package org.poppins.common;
+package org.summarly.common;
 
 import java.util.HashMap;
 import java.util.List;

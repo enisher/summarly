@@ -1,12 +1,12 @@
-package org.poppins.segmentation;
+package org.summarly.segmentation;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
-import org.poppins.common.Sentence;
-import org.poppins.common.Text;
+import org.summarly.common.Sentence;
+import org.summarly.common.Text;
 
 import java.util.ArrayList;
 import java.util.List;

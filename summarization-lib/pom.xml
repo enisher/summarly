@@ -75,7 +75,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.poppins.Main</mainClass>
+                            <mainClass>org.summarly.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

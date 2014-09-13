@@ -1,6 +1,6 @@
-package org.poppins.segmentation;
+package org.summarly.segmentation;
 
-import org.poppins.common.Text;
+import org.summarly.common.Text;
 
 /**
  * Created by Anton Chernetskij

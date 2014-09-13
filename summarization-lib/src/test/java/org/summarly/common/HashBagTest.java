@@ -1,4 +1,4 @@
-package org.poppins.common;
+package org.summarly.common;
 
 import org.junit.Assert;
 import org.junit.Test;

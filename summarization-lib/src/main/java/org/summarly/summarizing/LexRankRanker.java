@@ -1,10 +1,11 @@
-package org.poppins.summarizing;
+package org.summarly.summarizing;
 
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.apache.commons.math.linear.RealMatrix;
-import org.poppins.common.HashBag;
-import org.poppins.common.Sentence;
-import org.poppins.common.Text;
+import org.summarly.common.HashBag;
+import org.summarly.common.RankedSentence;
+import org.summarly.common.Sentence;
+import org.summarly.common.Text;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -12,9 +13,9 @@ import java.util.logging.Logger;
 /**
  * Created by Anton Chernetskij
  */
-public class LexRankSummarizer implements Summarizer {
+public class LexRankRanker implements Ranker {
 
-    private static final Logger LOGGER = Logger.getLogger(Summarizer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Ranker.class.getName());
     protected static final double THRESHOLD = 0.065;
     private static final double DAMPING_FACTOR = 0.1;
 
@@ -22,15 +23,9 @@ public class LexRankSummarizer implements Summarizer {
      * Creates extractive summary of the text
      *
      * @param text
-     * @param part fraction of sentences that must be present in summary. Part must be between 1 and 0. For example if
-     *             the text contains 10 sentences and part=0.2 then summary will contain 2 sentences.
      * @return
      */
-    public List<Sentence> summarize(Text text, double part) {
-
-        if (!(part > 0 && part < 1.0)) {
-            throw new IllegalArgumentException("Part must be between 1 and 0.");
-        }
+    public List<RankedSentence> rank(Text text) {
 
         LOGGER.info("Summarizing text " + text.getName());
 
@@ -52,19 +47,7 @@ public class LexRankSummarizer implements Summarizer {
 
         long finish = System.currentTimeMillis();
         LOGGER.info("Summarizing " + text.getName() + " finished in " + (finish - start) + " ms");
-        StringBuilder rankedSentencesList = new StringBuilder("RankedSentences:\n");
-        for (RankedSentence rankedSentence : rankedSentences) {
-            rankedSentencesList.append(rankedSentence.toString()).append("\n");
-        }
-        LOGGER.info(rankedSentencesList.toString());
-        System.out.println(rankedSentences);
-        Collections.sort(rankedSentences);
-        List<Sentence> result = new ArrayList<Sentence>((int) (text.numSentences() * part));
-        int summarySize = (int) (rankedSentences.size() * part);
-        for (int i = rankedSentences.size() - 1; i >= rankedSentences.size() - summarySize; i--) {
-            result.add(rankedSentences.get(i).getSentence());
-        }
-        return result;
+        return rankedSentences;
     }
 
     protected double[][] getSimilarities(Text text) {
@@ -225,34 +208,5 @@ public class LexRankSummarizer implements Summarizer {
         }
     }
 
-    public class RankedSentence implements Comparable<RankedSentence> {
 
-        private double rank;
-        private Sentence sentence;
-
-        public RankedSentence(double rank, Sentence sentence) {
-            this.rank = rank;
-            this.sentence = sentence;
-        }
-
-        public double getRank() {
-            return rank;
-        }
-
-        public Sentence getSentence() {
-            return sentence;
-        }
-
-        public int compareTo(RankedSentence o) {
-            return Double.compare(rank, o.rank);
-        }
-
-        @Override
-        public String toString() {
-            return "RankedSentence{" +
-                    "rank=" + rank +
-                    ", sentence=" + sentence +
-                    '}';
-        }
-    }
 }

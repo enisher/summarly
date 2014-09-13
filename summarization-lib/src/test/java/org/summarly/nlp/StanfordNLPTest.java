@@ -1,4 +1,4 @@
-package org.poppins.nlp;
+package org.summarly.nlp;
 
 import edu.stanford.nlp.dcoref.CorefChain;
 import edu.stanford.nlp.dcoref.CorefCoreAnnotations;
@@ -13,7 +13,7 @@ import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.poppins.common.TextReader;
+import org.summarly.common.TextReader;
 
 import java.util.List;
 import java.util.Map;
