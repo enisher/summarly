@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  */
@@ -26,7 +28,7 @@ public class LuceneSplitter implements TextSplitter {
         for (int end = iterator.next();
              end != BreakIterator.DONE;
              start = end, end = iterator.next()) {
-             sentences.add(text.substring(start, end));
+            sentences.add(text.substring(start, end));
         }
         return sentences;
     }
@@ -43,7 +45,7 @@ public class LuceneSplitter implements TextSplitter {
     private List<String> extractNormalizedTokens(String text, Analyzer analyzer) {
         try (TokenStream tokenStream = analyzer.tokenStream(null, text)) {
             tokenStream.reset();
-            ArrayList<String> words = new ArrayList<>();
+            List<String> words = new ArrayList<>();
             while (tokenStream.incrementToken()) {
                 words.add(tokenStream.getAttribute(CharTermAttribute.class).toString());
             }
@@ -56,12 +58,13 @@ public class LuceneSplitter implements TextSplitter {
     @Override
     public Text split(String text, String name) {
 
-        ArrayList<Sentence> sentences = new ArrayList<>();
-        for (String sentence : splitTextOnSentences(text)) {
-            Sentence aSentence = new Sentence(sentence);
-            aSentence.setWords(extractNormalizedTokens(sentence, new RussianAnalyzer(Version.LUCENE_4_9)));
-            sentences.add(aSentence);
-        }
+        final List<Sentence> sentences = splitTextOnSentences(text).stream()
+                .filter(sentence -> Pattern.compile("\\w").matcher(sentence).find())
+                .map(sentence -> {
+                    Sentence aSentence = new Sentence(sentence);
+                    aSentence.setWords(extractNormalizedTokens(sentence, new RussianAnalyzer(Version.LUCENE_4_9)));
+                    return aSentence;
+                }).collect(Collectors.toList());
 
         Text theText = new Text(text);
         theText.setSentences(sentences);
