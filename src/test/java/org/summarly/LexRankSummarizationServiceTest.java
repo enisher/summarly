@@ -22,4 +22,17 @@ public class LexRankSummarizationServiceTest {
             System.out.println(sentence);
         }
     }
+
+    @Test
+    public void testProcess() throws Exception {
+
+        TextReader reader = new TextReader();
+        String s = reader.readText("src/test/resources/Hoverberget.txt");
+
+        LexRankSummarizationService summarizer = new LexRankSummarizationService();
+        List<String> summary = summarizer.summarise(s, 0.5);
+        for (String sentence : summary) {
+            System.out.println(sentence);
+        }
+    }
 }
