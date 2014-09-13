@@ -59,7 +59,7 @@ public class LuceneSplitter implements TextSplitter {
         ArrayList<Sentence> sentences = new ArrayList<>();
         for (String sentence : splitTextOnSentences(text)) {
             Sentence aSentence = new Sentence(sentence);
-            aSentence.setWords(extractNormalizedTokens(text, new RussianAnalyzer(Version.LUCENE_4_9)));
+            aSentence.setWords(extractNormalizedTokens(sentence, new RussianAnalyzer(Version.LUCENE_4_9)));
             sentences.add(aSentence);
         }
 
