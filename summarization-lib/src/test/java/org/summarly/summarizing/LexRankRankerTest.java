@@ -76,15 +76,6 @@ public class LexRankRankerTest extends LexRankRanker {
     }
 
     @Test
-    public void testSummarize() throws Exception {
-        LexRankRanker summarizer = new LexRankRanker();
-        List<RankedSentence> summary = summarizer.rank(text);
-        Assert.assertEquals(sentences[3], summary.get(0).getSentence());
-        Assert.assertEquals(sentences[7], summary.get(1).getSentence());
-        Assert.assertEquals(sentences[0], summary.get(2).getSentence());
-    }
-
-    @Test
     public void testInverseDocumentFrequency() {
         LexRankRanker summarizer = new LexRankRanker();
         Map<String, Double> wordFrequencies = summarizer.inverseDocumentFrequency(text);
