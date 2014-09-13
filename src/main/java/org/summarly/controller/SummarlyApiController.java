@@ -8,17 +8,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.summarly.common.TextReader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.summarly.lib.SummarizationService;
+import org.summarly.model.ArticleModel;
 
 @RestController
 @RequestMapping(value = "summarly-api")
 public class SummarlyApiController {
 
-    Logger log = LoggerFactory.getLogger(SummarlyApiController.class);
+    private static final Logger log = LoggerFactory.getLogger(SummarlyApiController.class);
 
-    @RequestMapping(value ={ "/", "/index", "" }, method = RequestMethod.GET)
-    public String index() {
-        return "Use /summarize url with articleText parameter to summarize";
-    }
+    @Autowired
+    private SummarizationService summarizationService;
 
     @RequestMapping(value = "/summarizeText", method = RequestMethod.POST)
     public String summarizeText(@RequestParam String articleText) {
