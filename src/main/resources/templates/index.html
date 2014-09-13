@@ -90,8 +90,8 @@
             e.preventDefault();
             if ($('input[name=summarizeType]:checked').val() == 'url') {
                 $.ajax({
-                    url: '/summarly-api/summarize/url',
-                    type: 'post',
+                    url: '/summary',
+                    type: 'get',
                     data: { url: $('input[name=url]').val() },
                     success: function (htmlData) {
                         $('#response').html(htmlData);
@@ -99,7 +99,7 @@
                 })
             } else {
                 $.ajax({
-                    url: '/summarly-api/summarize/text',
+                    url: '/text',
                     type: 'post',
                     data: { text: $('textarea[name=text]').val() },
                     success: function (htmlData) {
