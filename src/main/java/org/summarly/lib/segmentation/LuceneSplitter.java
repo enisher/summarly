@@ -59,7 +59,7 @@ public class LuceneSplitter implements TextSplitter {
     public Text split(String text, String name) {
 
         final List<Sentence> sentences = splitTextOnSentences(text).stream()
-                .filter(sentence -> Pattern.compile("\\w").matcher(sentence).find())
+                .filter(sentence -> Pattern.compile("\\p{L}").matcher(sentence).find()).peek(System.out::println)
                 .map(sentence -> {
                     Sentence aSentence = new Sentence(sentence);
                     aSentence.setWords(extractNormalizedTokens(sentence, new RussianAnalyzer(Version.LUCENE_4_9)));
