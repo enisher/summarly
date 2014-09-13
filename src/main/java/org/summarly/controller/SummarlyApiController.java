@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import org.summarly.model.ArticleModel;
 
 @RestController
-public class SummarlyController {
+@RequestMapping(value = "summarly-api")
+public class SummarlyApiController {
 
-    Logger log = LoggerFactory.getLogger(SummarlyController.class);
+    Logger log = LoggerFactory.getLogger(SummarlyApiController.class);
 
-
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value ={ "/", "/index", "" }, method = RequestMethod.GET)
     public String index() {
         return "Use /summarize url with articleText parameter to summarize";
     }
