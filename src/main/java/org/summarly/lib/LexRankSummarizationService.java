@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.apache.tika.language.LanguageIdentifier;
+
 /**
  * Created by Anton Chernetskij
  */
@@ -38,8 +40,15 @@ public class LexRankSummarizationService implements SummarizationService {
     public List<String> summarise(String s, double ratio) {
         long start = System.currentTimeMillis();
         Text text;
-//        text = enSplitter.split(s, "");
-        text = ruSplitter.split(s, "");
+
+        LanguageIdentifier languageIdentifier = new  LanguageIdentifier(s);
+        String lang = languageIdentifier.getLanguage();
+
+        if (lang.equals("en")){
+            text = enSplitter.split(s, "");
+        } else {
+            text = ruSplitter.split(s, "");
+        }
 
         if (text.numSentences() < 6) {
             throw new RuntimeException("The text is too small to apply extractive summary");
