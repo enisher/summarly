@@ -3,9 +3,8 @@ package org.summarly.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.summarly.ArticleModel;
+import org.summarly.model.ArticleModel;
 
 @RestController
 public class SummarlyController {

@@ -1,4 +1,4 @@
-package org.summarly;
+package org.summarly.model;
 
 
 public class ArticleModel {
