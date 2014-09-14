@@ -15,7 +15,7 @@ public class QuotesModifier extends BaseRankModifier {
 
     @Override
     public RankedSentence modifySentence(RankedSentence sentence) {
-        String text = sentence.getSentence().getSentence().trim();
+        String text = sentence.getSentence().getText().trim();
         Matcher matcher = pattern.matcher(text);
         if (matcher.find()) {
             sentence.setRank(sentence.getRank() * K);

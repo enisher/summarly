@@ -65,7 +65,7 @@ public class LexRankSummarizationService implements SummarizationService {
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
         return filter.filter(rankedText, ratio)
-                .stream().map(p -> p.getSentence().getSentence())
+                .stream().map(p -> p.getSentence().getText())
                 .collect(Collectors.<String>toList());
     }
 

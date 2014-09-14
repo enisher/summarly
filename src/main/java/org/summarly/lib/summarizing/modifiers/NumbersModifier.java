@@ -12,7 +12,7 @@ public class NumbersModifier extends BaseRankModifier {
     @Override
     public RankedSentence modifySentence(RankedSentence sentence) {
 
-        String text = sentence.getSentence().getSentence().trim();
+        String text = sentence.getSentence().getText().trim();
         for (int i = 1; i < text.length(); i++) {
             if (Character.isDigit(text.charAt(i))) {
                 sentence.setRank(sentence.getRank() * K);
