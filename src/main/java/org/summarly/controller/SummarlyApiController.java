@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.summarly.lib.UnsupportedLanguageException;
 import org.summarly.lib.common.TextReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.summarly.lib.SummarizationService;
@@ -48,10 +49,16 @@ public class SummarlyApiController {
     }
 
     private String summarize(String originalText) {
-        List<String> summary = summarizationService.summarise(originalText, 0.5);
-        StringBuilder builder = new StringBuilder();
-        summary.stream().forEach(s -> builder.append(s).append(" "));
+        List<String> summary = null;
+        try {
+            summary = summarizationService.summarise(originalText, 0.5);
 
-        return builder.toString();
+            StringBuilder builder = new StringBuilder();
+            summary.stream().forEach(s -> builder.append(s).append(" "));
+
+            return builder.toString();
+        } catch (UnsupportedLanguageException e) {
+            return "Sorry article language is not supported yet. :(";
+        }
     }
 }

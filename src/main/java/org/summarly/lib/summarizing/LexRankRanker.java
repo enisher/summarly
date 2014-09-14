@@ -58,6 +58,10 @@ public class LexRankRanker implements Ranker {
         for (int i = 0; i < numSentences; i++) {
             for (int j = 0; j < i; j++) {
                 similarities[i][j] = similarity(sentences.get(i), sentences.get(j), stringDoubleMap);
+                if (Double.isNaN(similarities[i][j])) {
+                    similarities[i][j] = 0;
+                    LOGGER.severe("NaN similarity for \"" + sentences.get(i) + "\" and \"" + sentences.get(j) + "\" in text \"" + text + "\"");
+                }
                 similarities[j][i] = similarities[i][j];
             }
             similarities[i][i] = 1;

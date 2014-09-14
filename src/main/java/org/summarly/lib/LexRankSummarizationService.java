@@ -38,7 +38,7 @@ public class LexRankSummarizationService implements SummarizationService {
         rankModifiers = Arrays.<RankModifier>asList(text -> text);
     }
 
-    public List<String> summarise(String s, double ratio) {
+    public List<String> summarise(String s, double ratio) throws UnsupportedLanguageException {
         long start = System.currentTimeMillis();
         Text text;
 
@@ -47,10 +47,15 @@ public class LexRankSummarizationService implements SummarizationService {
         PreFilter preFilter = new PreFilter();
         s = preFilter.filterBrackets(s);
 
-        if (lang.equals("en")){
-            text = enSplitter.split(s, "");
-        } else {
-            text = ruSplitter.split(s, "");
+        switch (lang){
+            case "en":
+                text = enSplitter.split(s, "");
+                break;
+            case "ru":
+                text = ruSplitter.split(s, "");
+                break;
+            default:
+                throw new UnsupportedLanguageException();
         }
 
         if (text.numSentences() < 6) {
@@ -64,9 +69,11 @@ public class LexRankSummarizationService implements SummarizationService {
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
-        return filter.filter(rankedText, ratio)
+        List<String> summary = filter.filter(rankedText, ratio)
                 .stream().map(p -> p.getSentence().getText())
                 .collect(Collectors.<String>toList());
+
+        return summary;
     }
 
     private List<RankedSentence> modifyRank(List<RankedSentence> text){
