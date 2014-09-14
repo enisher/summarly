@@ -50,10 +50,6 @@ public class LexRankSummarizationService implements SummarizationService {
         s = preFilter.filterBrackets(s);
         text = splitText(s);
 
-        if (text.numSentences() < 6) {
-            throw new RuntimeException("The text is too small to apply extractive summary");
-        }
-
         List<RankedSentence> rankedText = ranker.rank(text);
         rankedText = modifyRank(rankedText);
 
