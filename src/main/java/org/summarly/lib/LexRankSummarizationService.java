@@ -50,10 +50,6 @@ public class LexRankSummarizationService implements SummarizationService {
         s = preFilter.filterBrackets(s);
         text = splitText(s);
 
-        if (text.numSentences() < 6) {
-            throw new RuntimeException("The text is too small to apply extractive summary");
-        }
-
         List<RankedSentence> rankedText = ranker.rank(text);
         rankedText = modifyRank(rankedText);
 
@@ -65,6 +61,12 @@ public class LexRankSummarizationService implements SummarizationService {
                 .stream().map(RankedSentence::getSentence)
                 .collect(Collectors.<Sentence>toList());
 
+        List<String> paragraphs = buildParagraphs(summary);
+
+        return paragraphs;
+    }
+
+    private List<String> buildParagraphs(List<Sentence> summary) {
         List<String> paragraphs = new ArrayList<String>();
         StringBuilder builder = new StringBuilder();
         int currentParagraph = 0;
@@ -78,7 +80,6 @@ public class LexRankSummarizationService implements SummarizationService {
                 builder.append(" ");
             }
         }
-
         return paragraphs;
     }
 
