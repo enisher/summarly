@@ -1,5 +1,7 @@
 package org.summarly.lib;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.summarly.lib.common.RankedSentence;
 import org.summarly.lib.common.Text;
 import org.summarly.lib.segmentation.LuceneSplitter;
@@ -14,7 +16,7 @@ import org.summarly.lib.common.Sentence;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.apache.tika.language.LanguageIdentifier;
@@ -24,7 +26,8 @@ import org.apache.tika.language.LanguageIdentifier;
  */
 public class LexRankSummarizationService implements SummarizationService {
 
-    private static final Logger LOGGER = Logger.getLogger(LexRankSummarizationService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(LexRankSummarizationService.class);
+
     private Ranker ranker;
     private TextSplitter enSplitter;
     private TextSplitter ruSplitter;
@@ -39,7 +42,7 @@ public class LexRankSummarizationService implements SummarizationService {
         rankModifiers = Arrays.<RankModifier>asList(text -> text);
     }
 
-    public String summarise(String s, double ratio) throws UnsupportedLanguageException {
+    public List<String> summarise(String s, double ratio) throws UnsupportedLanguageException {
         long start = System.currentTimeMillis();
         Text text;
 
@@ -56,7 +59,7 @@ public class LexRankSummarizationService implements SummarizationService {
                 text = ruSplitter.split(s, "");
                 break;
             default:
-                throw new UnsupportedLanguageException();
+                throw new UnsupportedLanguageException(lang);
         }
 
         if (text.numSentences() < 6) {
@@ -71,23 +74,27 @@ public class LexRankSummarizationService implements SummarizationService {
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
         List<Sentence> summary = filter.filter(rankedText, ratio)
-                .stream().map(p -> p.getSentence())
+                .stream().map(RankedSentence::getSentence)
                 .collect(Collectors.<Sentence>toList());
 
+        List<String> paragraphs = new ArrayList<String>();
         StringBuilder builder = new StringBuilder();
-        int curentParagraph = 0;
-        for (Sentence sentence : summary){
+        int currentParagraph = 0;
+        for (Sentence sentence : summary) {
             builder.append(sentence.getText());
-            if (sentence.getParagraphNum() != curentParagraph){
-                curentParagraph = sentence.getParagraphNum();
-                builder.append("\n");
+            if (sentence.getParagraphNum() != currentParagraph) {
+                currentParagraph = sentence.getParagraphNum();
+                paragraphs.add(builder.toString());
+                builder.setLength(0);
+            } else {
+                builder.append(" ");
             }
         }
 
-        return builder.toString();
+        return paragraphs;
     }
 
-    private List<RankedSentence> modifyRank(List<RankedSentence> text){
+    private List<RankedSentence> modifyRank(List<RankedSentence> text) {
         for (RankModifier modifier : rankModifiers) {
             text = modifier.modify(text);
         }

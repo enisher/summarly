@@ -15,6 +15,7 @@ import org.summarly.lib.common.TextReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.summarly.lib.SummarizationService;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -30,7 +31,7 @@ public class SummarlyApiController {
         log.info("Received article text: " + text);
 
         ModelAndView modelAndView = new ModelAndView("summary");
-        modelAndView.addObject("body", summarize(text));
+        modelAndView.addObject("paragraphs", summarize(text));
 
         return modelAndView;
     }
@@ -43,16 +44,17 @@ public class SummarlyApiController {
         String articleText = reader.readTextFromURL(url);
 
         ModelAndView modelAndView = new ModelAndView("summary");
-        modelAndView.addObject("body", summarize(articleText));
+        modelAndView.addObject("paragraphs", summarize(articleText));
 
         return modelAndView;
     }
 
-    private String summarize(String originalText) {
+    private List<String> summarize(String originalText) {
+
         try {
             return summarizationService.summarise(originalText, 0.5);
         } catch (UnsupportedLanguageException e) {
-            return "Sorry article language is not supported yet. :(";
+            return Arrays.asList("Sorry article language [" + e.getLanguage() + "] is not supported yet. :(");
         }
     }
 }
