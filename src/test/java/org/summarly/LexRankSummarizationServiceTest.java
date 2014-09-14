@@ -2,6 +2,7 @@ package org.summarly;
 
 import org.junit.Test;
 import org.summarly.lib.LexRankSummarizationService;
+import org.summarly.lib.common.Sentence;
 import org.summarly.lib.common.TextReader;
 import org.summarly.lib.summarizing.PreFilter;
 
@@ -20,8 +21,8 @@ public class LexRankSummarizationServiceTest {
         String s = reader.readText("src/test/resources/Hoverberget.txt");
 
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
-        List<String> summary = summarizer.summarise(s, 0.5);
-        summary.forEach(out::println);
+        String summary = summarizer.summarise(s, 0.5);
+        System.out.println(summary);
     }
 
     @Test
@@ -31,8 +32,8 @@ public class LexRankSummarizationServiceTest {
         String s = reader.readText("src/test/resources/Russian.txt");
 
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
-        List<String> summary = summarizer.summarise(s, 0.5);
-        summary.forEach(out::println);
+        String summary = summarizer.summarise(s, 0.5);
+        System.out.println(summary);
     }
 
     @Test
@@ -43,8 +44,8 @@ public class LexRankSummarizationServiceTest {
         PreFilter preFilter = new PreFilter();
         source = preFilter.filterBrackets(source);
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
-        List<String> summary = summarizer.summarise(source, 0.5);
-        summary.forEach(out::println);
+        String summary = summarizer.summarise(source, 0.5);
+        System.out.println(summary);
     }
 
     @Test
@@ -52,8 +53,19 @@ public class LexRankSummarizationServiceTest {
         TextReader reader = new TextReader();
         String source = reader.readTextFromURL("http://habrahabr.ru/post/236673/");
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
-        List<String> summary = summarizer.summarise(source, 0.5);
-        System.out.println(summary.size());
-        summary.forEach(out::println);
+        String summary = summarizer.summarise(source, 0.5);
+        System.out.println(summary);
+    }
+
+
+    @Test
+    public void testProcessAnotherHabrArticle() throws Exception {
+        TextReader reader = new TextReader();
+        String source = reader.readTextFromURL("http://www.stopfake.org/kanal-rossiya-24-snyal-eksklyuzivnyj-miting-kotoryj-sam-zhe-i-srezhissiroval/");
+
+        LexRankSummarizationService summarizer = new LexRankSummarizationService();
+
+        String summary = summarizer.summarise(source, 0.5);
+        System.out.println(summary);
     }
 }

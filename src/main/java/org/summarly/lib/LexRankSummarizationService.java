@@ -10,6 +10,7 @@ import org.summarly.lib.summarizing.LexRankRanker;
 import org.summarly.lib.summarizing.PreFilter;
 import org.summarly.lib.summarizing.modifiers.RankModifier;
 import org.summarly.lib.summarizing.Ranker;
+import org.summarly.lib.common.Sentence;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,7 @@ public class LexRankSummarizationService implements SummarizationService {
         rankModifiers = Arrays.<RankModifier>asList(text -> text);
     }
 
-    public List<String> summarise(String s, double ratio) throws UnsupportedLanguageException {
+    public String summarise(String s, double ratio) throws UnsupportedLanguageException {
         long start = System.currentTimeMillis();
         Text text;
 
@@ -47,7 +48,7 @@ public class LexRankSummarizationService implements SummarizationService {
         PreFilter preFilter = new PreFilter();
         s = preFilter.filterBrackets(s);
 
-        switch (lang){
+        switch (lang) {
             case "en":
                 text = enSplitter.split(s, "");
                 break;
@@ -69,11 +70,21 @@ public class LexRankSummarizationService implements SummarizationService {
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
-        List<String> summary = filter.filter(rankedText, ratio)
-                .stream().map(p -> p.getSentence().getText())
-                .collect(Collectors.<String>toList());
+        List<Sentence> summary = filter.filter(rankedText, ratio)
+                .stream().map(p -> p.getSentence())
+                .collect(Collectors.<Sentence>toList());
 
-        return summary;
+        StringBuilder builder = new StringBuilder();
+        int curentParagraph = 0;
+        for (Sentence sentence : summary){
+            builder.append(sentence.getText());
+            if (sentence.getParagraphNum() != curentParagraph){
+                curentParagraph = sentence.getParagraphNum();
+                builder.append("\n");
+            }
+        }
+
+        return builder.toString();
     }
 
     private List<RankedSentence> modifyRank(List<RankedSentence> text){
