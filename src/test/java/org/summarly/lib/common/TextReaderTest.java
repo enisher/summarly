@@ -14,7 +14,9 @@ public class TextReaderTest {
         TextReader reader = new TextReader();
         String s = reader.readText(new URL("http://uainfo.org/blognews/394212-v-umovah-vyni-ne-mozhna-zaprovadzhuvati-osobliviy-status-donbasu-timoshenko.html"));
 
-        Assert.assertNotNull(s);
-    }
+        Article a = reader.readTextFromURL("http://habrahabr.ru/post/236717/");
 
-}
+        Assert.assertNotNull(s);
+        }
+
+        }
