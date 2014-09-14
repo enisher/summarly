@@ -78,7 +78,7 @@ public class LexRankSummarizationServiceTest {
     @Test
     public void testProcessCensorArticle() throws Exception {
         TextReader reader = new TextReader();
-        String source = reader.readTextFromURL("http://habrahabr.ru/post/234551/");
+        String source = reader.readTextFromURL("http://habrahabr.ru/post/234551/").getText();
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
         List<String> summary = summarizer.summarise(source, 0.5);
         Assert.assertFalse(summary.isEmpty());
