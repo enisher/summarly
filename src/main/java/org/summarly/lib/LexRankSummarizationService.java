@@ -42,7 +42,7 @@ public class LexRankSummarizationService implements SummarizationService {
         rankModifiers = Arrays.<RankModifier>asList(text -> text);
     }
 
-    public List<String> summarise(String s, double ratio) throws UnsupportedLanguageException {
+    public List<String> summarise(String s) throws UnsupportedLanguageException {
         long start = System.currentTimeMillis();
         Text text;
 
@@ -61,7 +61,7 @@ public class LexRankSummarizationService implements SummarizationService {
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
-        List<Sentence> summary = filter.filter(rankedText, ratio)
+        List<Sentence> summary = filter.filter(rankedText, getRatio(rankedText))
                 .stream().map(RankedSentence::getSentence)
                 .collect(Collectors.<Sentence>toList());
 
@@ -104,6 +104,10 @@ public class LexRankSummarizationService implements SummarizationService {
             text = modifier.modify(text);
         }
         return text;
+    }
+
+    protected double getRatio(List<RankedSentence> text){
+        return 10.0/(text.size() + 15) + 0.5;
     }
 
     public Ranker getRanker() {
