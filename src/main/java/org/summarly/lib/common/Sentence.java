@@ -11,12 +11,13 @@ public class Sentence {
 
     private String sentence;
     private List<String> words;
+    private int paragraphNum;
 
     public Sentence(String sentence) {
         this.sentence = sentence;
     }
 
-    public String getSentence() {
+    public String getText() {
         return sentence;
     }
 
@@ -46,6 +47,14 @@ public class Sentence {
 
         }
         return words;
+    }
+
+    public int getParagraphNum() {
+        return paragraphNum;
+    }
+
+    public void setParagraphNum(int paragraphNum) {
+        this.paragraphNum = paragraphNum;
     }
 
     @Override

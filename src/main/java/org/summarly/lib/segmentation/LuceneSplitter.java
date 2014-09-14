@@ -20,26 +20,23 @@ import java.util.stream.Collectors;
  */
 public class LuceneSplitter implements TextSplitter {
 
-    public List<String> splitTextOnSentences(String text) {
-        ArrayList<String> sentences = new ArrayList<>();
+    public List<Sentence> splitTextOnSentences(String text) {
+        List<Sentence> sentences = new ArrayList<>();
         BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
         iterator.setText(text);
         int start = iterator.first();
         for (int end = iterator.next();
              end != BreakIterator.DONE;
              start = end, end = iterator.next()) {
-            sentences.add(text.substring(start, end));
+            Sentence sentence = new Sentence(text.substring(start, end));
+            sentence.setParagraphNum(paragraphNumber(start, text));
+            sentences.add(sentence);
         }
         return sentences;
     }
 
-    public List<String> splitSentence(String text) throws IOException {
-        final Analyzer analyzer;
-
-        analyzer = new RussianAnalyzer(Version.LUCENE_4_9);
-
-        return extractNormalizedTokens(text, analyzer);
-
+    private int paragraphNumber(int position, String text) {
+        return 0;
     }
 
     private List<String> extractNormalizedTokens(String text, Analyzer analyzer) {
@@ -59,12 +56,12 @@ public class LuceneSplitter implements TextSplitter {
     public Text split(String text, String name) {
 
         final List<Sentence> sentences = splitTextOnSentences(text).stream()
-                .filter(sentence -> Pattern.compile("\\p{L}").matcher(sentence).find())
+                .filter(sentence -> Pattern.compile("\\p{L}").matcher(sentence.getText()).find())
                 .map(sentence -> {
-                    Sentence aSentence = new Sentence(sentence);
-                    aSentence.setWords(extractNormalizedTokens(sentence, new RussianAnalyzer(Version.LUCENE_4_9)));
-                    return aSentence;
-                }).filter(sentence -> sentence.getWords().size() > 0).collect(Collectors.toList());
+                    sentence.setWords(extractNormalizedTokens(sentence.getText(), new RussianAnalyzer(Version.LUCENE_4_9)));
+                    return sentence;
+                }).filter(sentence -> sentence.getWords().size() > 0)
+                .collect(Collectors.toList());
 
         Text theText = new Text(text);
         theText.setSentences(sentences);

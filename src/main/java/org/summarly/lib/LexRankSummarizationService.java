@@ -7,6 +7,7 @@ import org.summarly.lib.segmentation.StanfordNLPSplitter;
 import org.summarly.lib.segmentation.TextSplitter;
 import org.summarly.lib.summarizing.Filter;
 import org.summarly.lib.summarizing.LexRankRanker;
+import org.summarly.lib.summarizing.PreFilter;
 import org.summarly.lib.summarizing.modifiers.RankModifier;
 import org.summarly.lib.summarizing.Ranker;
 
@@ -37,17 +38,24 @@ public class LexRankSummarizationService implements SummarizationService {
         rankModifiers = Arrays.<RankModifier>asList(text -> text);
     }
 
-    public List<String> summarise(String s, double ratio) {
+    public List<String> summarise(String s, double ratio) throws UnsupportedLanguageException {
         long start = System.currentTimeMillis();
         Text text;
 
         LanguageIdentifier languageIdentifier = new  LanguageIdentifier(s);
         String lang = languageIdentifier.getLanguage();
+        PreFilter preFilter = new PreFilter();
+        s = preFilter.filterBrackets(s);
 
-        if (lang.equals("en")){
-            text = enSplitter.split(s, "");
-        } else {
-            text = ruSplitter.split(s, "");
+        switch (lang){
+            case "en":
+                text = enSplitter.split(s, "");
+                break;
+            case "ru":
+                text = ruSplitter.split(s, "");
+                break;
+            default:
+                throw new UnsupportedLanguageException();
         }
 
         if (text.numSentences() < 6) {
@@ -61,9 +69,11 @@ public class LexRankSummarizationService implements SummarizationService {
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
-        return filter.filter(rankedText, ratio)
-                .stream().map(p -> p.getSentence().getSentence())
+        List<String> summary = filter.filter(rankedText, ratio)
+                .stream().map(p -> p.getSentence().getText())
                 .collect(Collectors.<String>toList());
+
+        return summary;
     }
 
     private List<RankedSentence> modifyRank(List<RankedSentence> text){
