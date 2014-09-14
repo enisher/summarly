@@ -63,10 +63,7 @@ public class TextReader {
         String json;
 
         try {
-            //json = ArticleExtractor.getInstance().getText(new URL(url));
-            //article = parseJSON(json);
-
-            final HTMLDocument htmlDoc = HTMLFetcher.fetch(new URL(url));
+            final HTMLDocument htmlDoc = fetch(new URL(url));
             final TextDocument doc = new BoilerpipeSAXInput(htmlDoc.toInputSource()).getTextDocument();
             article.setTitle(doc.getTitle());
             article.setText(ArticleExtractor.INSTANCE.getText(doc));
@@ -83,15 +80,10 @@ public class TextReader {
             }
 
         } catch (Exception e) {
-            ArticleExtractor articleExtractor = ArticleExtractor.getInstance();
-
-            res = articleExtractor.getText(fetch(new URL(url)).toInputSource());
-        } catch (IOException | BoilerpipeProcessingException e) {
             throw new RuntimeException(e);
         }
 
         return article;
-        return res;
     }
 
     private static HTMLDocument fetch(final URL url) throws IOException {
