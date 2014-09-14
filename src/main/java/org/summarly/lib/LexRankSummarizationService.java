@@ -76,13 +76,18 @@ public class LexRankSummarizationService implements SummarizationService {
 
         StringBuilder builder = new StringBuilder();
         int curentParagraph = 0;
+        builder.append("<p>");
         for (Sentence sentence : summary){
             builder.append(sentence.getText());
             if (sentence.getParagraphNum() != curentParagraph){
                 curentParagraph = sentence.getParagraphNum();
-                builder.append("\n");
+                builder.append("<p/>");
+                builder.append("<p>");
+            } else {
+                builder.append(" ");
             }
         }
+        builder.append("<p/>");
 
         return builder.toString();
     }
