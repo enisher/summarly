@@ -115,7 +115,7 @@ public class LexRankSummarizationService implements SummarizationService {
     }
 
     protected double getRatio(List<RankedSentence> text) {
-        return 10.0 / (text.size() + 15) + 0.5;
+        return Math.min(1.0, 10.0 / (text.size() + 15) + 0.4);
     }
 
     public Ranker getRanker() {
