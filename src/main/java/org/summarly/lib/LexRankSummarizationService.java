@@ -65,6 +65,12 @@ public class LexRankSummarizationService implements SummarizationService {
                 .stream().map(RankedSentence::getSentence)
                 .collect(Collectors.<Sentence>toList());
 
+        List<String> paragraphs = buildParagraphs(summary);
+
+        return paragraphs;
+    }
+
+    private List<String> buildParagraphs(List<Sentence> summary) {
         List<String> paragraphs = new ArrayList<String>();
         StringBuilder builder = new StringBuilder();
         int currentParagraph = 0;
@@ -78,7 +84,6 @@ public class LexRankSummarizationService implements SummarizationService {
                 builder.append(" ");
             }
         }
-
         return paragraphs;
     }
 
