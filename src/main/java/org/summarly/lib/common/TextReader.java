@@ -69,7 +69,8 @@ public class TextReader {
             article.setText(ArticleExtractor.INSTANCE.getText(doc));
 
             List<Image> images = ImageExtractor.INSTANCE.process(new URL(url), CommonExtractors.ARTICLE_EXTRACTOR);
-            //Collections.sort(images);
+
+            Collections.sort(images);
             if(!images.isEmpty()){
                 String imgSrc = images.get(0).getSrc();
                 if (!imgSrc.startsWith("http:")) {
