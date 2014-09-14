@@ -64,7 +64,7 @@ public class LuceneSplitter implements TextSplitter {
                     Sentence aSentence = new Sentence(sentence);
                     aSentence.setWords(extractNormalizedTokens(sentence, new RussianAnalyzer(Version.LUCENE_4_9)));
                     return aSentence;
-                }).collect(Collectors.toList());
+                }).filter(sentence -> sentence.getWords().size() > 0).collect(Collectors.toList());
 
         Text theText = new Text(text);
         theText.setSentences(sentences);

@@ -46,4 +46,14 @@ public class LexRankSummarizationServiceTest {
         List<String> summary = summarizer.summarise(source, 0.5);
         summary.forEach(out::println);
     }
+
+    @Test
+    public void testProcessHabrArticle() throws Exception {
+        TextReader reader = new TextReader();
+        String source = reader.readTextFromURL("http://habrahabr.ru/post/236673/");
+        LexRankSummarizationService summarizer = new LexRankSummarizationService();
+        List<String> summary = summarizer.summarise(source, 0.5);
+        System.out.println(summary.size());
+        summary.forEach(out::println);
+    }
 }
