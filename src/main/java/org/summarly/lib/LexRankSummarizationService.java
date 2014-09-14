@@ -10,9 +10,11 @@ import org.summarly.lib.summarizing.LexRankRanker;
 import org.summarly.lib.summarizing.PreFilter;
 import org.summarly.lib.summarizing.modifiers.RankModifier;
 import org.summarly.lib.summarizing.Ranker;
+import org.summarly.lib.common.Sentence;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -47,7 +49,7 @@ public class LexRankSummarizationService implements SummarizationService {
         PreFilter preFilter = new PreFilter();
         s = preFilter.filterBrackets(s);
 
-        switch (lang){
+        switch (lang) {
             case "en":
                 text = enSplitter.split(s, "");
                 break;
@@ -55,7 +57,7 @@ public class LexRankSummarizationService implements SummarizationService {
                 text = ruSplitter.split(s, "");
                 break;
             default:
-                throw new UnsupportedLanguageException();
+                throw new UnsupportedLanguageException(lang);
         }
 
         if (text.numSentences() < 6) {
@@ -69,11 +71,25 @@ public class LexRankSummarizationService implements SummarizationService {
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
-        List<String> summary = filter.filter(rankedText, ratio)
-                .stream().map(p -> p.getSentence().getText())
-                .collect(Collectors.<String>toList());
+        List<Sentence> summary = filter.filter(rankedText, ratio)
+                .stream().map(p -> p.getSentence())
+                .collect(Collectors.<Sentence>toList());
 
-        return summary;
+        List<String> paragraphs = new ArrayList<String>();
+        StringBuilder builder = new StringBuilder();
+        int currentParagraph = 0;
+        for (Sentence sentence : summary){
+            builder.append(sentence.getText());
+            if (sentence.getParagraphNum() != currentParagraph){
+                currentParagraph = sentence.getParagraphNum();
+                paragraphs.add(builder.toString());
+                builder.setLength(0);
+            } else {
+                builder.append(" ");
+            }
+        }
+
+        return paragraphs;
     }
 
     private List<RankedSentence> modifyRank(List<RankedSentence> text){

@@ -23,6 +23,14 @@ public class Application {
         return new LexRankSummarizationService();
     }
 
+    @Bean
+    CharacterEncodingFilter characterEncodingFilter() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        return characterEncodingFilter;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
