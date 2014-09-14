@@ -52,7 +52,7 @@ public class SummarlyApiController {
         try {
             return summarizationService.summarise(originalText, 0.5);
         } catch (UnsupportedLanguageException e) {
-            return "Sorry article language is not supported yet. :(";
+            return "Sorry article language [" + e.getLanguage() + "] is not supported yet. :(";
         }
     }
 }

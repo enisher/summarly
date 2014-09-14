@@ -56,7 +56,7 @@ public class LexRankSummarizationService implements SummarizationService {
                 text = ruSplitter.split(s, "");
                 break;
             default:
-                throw new UnsupportedLanguageException();
+                throw new UnsupportedLanguageException(lang);
         }
 
         if (text.numSentences() < 6) {
