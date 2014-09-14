@@ -14,6 +14,7 @@ import org.summarly.lib.common.Sentence;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ public class LexRankSummarizationService implements SummarizationService {
         rankModifiers = Arrays.<RankModifier>asList(text -> text);
     }
 
-    public String summarise(String s, double ratio) throws UnsupportedLanguageException {
+    public List<String> summarise(String s, double ratio) throws UnsupportedLanguageException {
         long start = System.currentTimeMillis();
         Text text;
 
@@ -74,19 +75,21 @@ public class LexRankSummarizationService implements SummarizationService {
                 .stream().map(p -> p.getSentence())
                 .collect(Collectors.<Sentence>toList());
 
+        List<String> paragraphs = new ArrayList<String>();
         StringBuilder builder = new StringBuilder();
         int currentParagraph = 0;
         for (Sentence sentence : summary){
             builder.append(sentence.getText());
             if (sentence.getParagraphNum() != currentParagraph){
                 currentParagraph = sentence.getParagraphNum();
-                builder.append("\n\n");
+                paragraphs.add(builder.toString());
+                builder.setLength(0);
             } else {
                 builder.append(" ");
             }
         }
 
-        return builder.toString();
+        return paragraphs;
     }
 
     private List<RankedSentence> modifyRank(List<RankedSentence> text){
