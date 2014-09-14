@@ -10,11 +10,15 @@ import org.summarly.lib.segmentation.TextSplitter;
 import org.summarly.lib.summarizing.Filter;
 import org.summarly.lib.summarizing.LexRankRanker;
 import org.summarly.lib.summarizing.PreFilter;
+import org.summarly.lib.summarizing.modifiers.CapitalisedLetterModifier;
+import org.summarly.lib.summarizing.modifiers.NumbersModifier;
+import org.summarly.lib.summarizing.modifiers.QuotesModifier;
 import org.summarly.lib.summarizing.modifiers.RankModifier;
 import org.summarly.lib.summarizing.Ranker;
 import org.summarly.lib.common.Sentence;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -39,7 +43,11 @@ public class LexRankSummarizationService implements SummarizationService {
         ruSplitter = new LuceneSplitter();
         ranker = new LexRankRanker();
         filter = new Filter();
-        rankModifiers = Arrays.<RankModifier>asList(text -> text);
+        rankModifiers = Arrays.<RankModifier>asList(
+                new NumbersModifier(),
+                new CapitalisedLetterModifier(),
+                new QuotesModifier()
+        );
     }
 
     public List<String> summarise(String s) throws UnsupportedLanguageException {
@@ -59,13 +67,13 @@ public class LexRankSummarizationService implements SummarizationService {
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
-        List<Sentence> summary = filter.filter(rankedText, getRatio(rankedText))
-                .stream().map(RankedSentence::getSentence)
-                .collect(Collectors.<Sentence>toList());
+        filter.filter(rankedText, getRatio(rankedText))
+                .stream().forEach(System.out::println);
+//                .collect(Collectors.<Sentence>toList());
 
-        List<String> paragraphs = buildParagraphs(summary);
+//        List<String> paragraphs = buildParagraphs(summary);
 
-        return paragraphs;
+        return Collections.EMPTY_LIST;
     }
 
     private List<String> buildParagraphs(List<Sentence> summary) {

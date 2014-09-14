@@ -7,7 +7,7 @@ import org.summarly.lib.common.RankedSentence;
  */
 public class NumbersModifier extends BaseRankModifier {
 
-    private static final double K = 1.1;
+    private static final double K = 1.2;
 
     @Override
     public RankedSentence modifySentence(RankedSentence sentence) {

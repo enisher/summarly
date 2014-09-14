@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
  */
 public class QuotesModifier extends BaseRankModifier {
 
-    private static final double K = 1.1;
-    protected Pattern pattern = Pattern.compile("[\\\"']");    //todo add more quotes
+    private static final double K = 1.2;
+    protected Pattern pattern = Pattern.compile("[\\\"‘’“”'\"«»„”]");
 
     @Override
     public RankedSentence modifySentence(RankedSentence sentence) {
