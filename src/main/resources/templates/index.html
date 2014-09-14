@@ -10,110 +10,47 @@
     <script type="text/javascript" th:src="@{/js/application.js}"></script>
 </head>
 <body>
-<!-- Header -->
-<div th:include="::fragments/header">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Static header</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+
 <div class="container">
-    <div class="hero-unit">
-        <h1>Summarly Test Page</h1>
-
-        <p>
-            Insert URL to article page or text itself.
-        </p>
-
-        <p id="response">
-
-        </p>
-
-        <div class="form">
-
-            <label class="radio">
-                <input type="radio" name="summarizeType" value="url" checked="checked"/>
-                By Url
-            </label>
-
-            <label class="radio">
-                <input type="radio" name="summarizeType" value="text"/>
-                By Text
-            </label>
 
 
-            <form id="summarizeForm">
-                <fieldset>
-                    <div class="control-group" id="textData">
-                        <label class="control-label">Article:</label>
+    <div class="jumbotron">
+        <h1>Summarly, dude!</h1>
+        <p>Bored with wasting your time of too long articles with too little information? Summarly will help you to extract the most important part from the text.
+            With one click, Summarly makes blog posts and articles compact, clean and easy to read. Summarly eliminates all distractions from your online reading experience.</p>
 
-                        <div class="controls">
-                            <textarea name="text" placeholder="Insert article here"></textarea>
-                        </div>
-                    </div>
+        <form id="summarizeForm" role="form">
+            <fieldset>
 
-                    <div class="control-group" id="urlData" style="display: none">
-                        <label class="control-label">URL:</label>
+                <div class="form-group">
+                    <input id="articleLink" class="form-control" type="text" name="url" placeholder="Provide link to article..."/>
+                </div>
 
-                        <input type="text" name="url"/>
-                    </div>
 
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </fieldset>
-            </form>
-        </div>
+                <button type="submit" class="btn btn-primary btn-lg">Summarize</button>
+            </fieldset>
+        </form>
+
+
     </div>
-    <div th:include="::fragments/footer">&copy; 2014 The Static Templates</div>
+
+    <div id="response"></div>
 </div>
 
 <script type="text/javascript">
     $(function () {
-        $('input[name=summarizeType]').on('change', function (e) {
-            switchSummarizeType($(this).val());
-        });
-
-        switchSummarizeType("url");
-
         $('#summarizeForm').on('submit', function (e) {
             e.preventDefault();
-            if ($('input[name=summarizeType]:checked').val() == 'url') {
-                $.ajax({
-                    url: '/summary',
-                    type: 'get',
-                    data: { url: $('input[name=url]').val() },
-                    success: function (htmlData) {
-                        $('#response').html(htmlData);
-                    }
-                })
-            } else {
-                $.ajax({
-                    url: '/summary',
-                    type: 'post',
-                    data: { text: $('textarea[name=text]').val() },
-                    success: function (htmlData) {
-                        $('#response').html(htmlData);
-                    }
-                })
-            }
-        });
 
-        function switchSummarizeType(summarizeType) {
-            if (summarizeType == 'url') {
-                $('#textData').hide();
-                $('#urlData').show();
-            } else {
-                $('#textData').show();
-                $('#urlData').hide();
-            }
-        }
+            $.ajax({
+                url: '/summary',
+                type: 'get',
+                data: { url: $('#articleLink').val() },
+                success: function (htmlData) {
+                    $('#response').html(htmlData);
+                }
+            })
+        });
     });
 </script>
 </body>
