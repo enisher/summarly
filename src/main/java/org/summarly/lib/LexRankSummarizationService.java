@@ -101,6 +101,9 @@ public class LexRankSummarizationService implements SummarizationService {
             case "ru":
                 text = ruSplitter.split(s, "");
                 break;
+            case "uk":
+                text = ruSplitter.split(s, "");
+                break;
             default:
                 throw new UnsupportedLanguageException(lang);
         }
