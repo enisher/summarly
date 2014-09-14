@@ -13,7 +13,7 @@ import java.util.*;
 public class PreFilter {
 
     public static final int DEFAULT_LEVENSHTEIN_DISTANCE_THRESHOLD = 3;
-    public static final double DEFAULT_PERCENT_THRESHOLD = 0.15d;
+    public static final double DEFAULT_PERCENT_THRESHOLD = 0.75d;
 
     public String filterBrackets(String text) {
         return text.replaceAll("\\[.{0,100}?\\]","")
