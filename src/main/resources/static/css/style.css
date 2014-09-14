@@ -1,6 +1,10 @@
+.container {
+    width: 800px;
+}
+
 article {
     font-family: 'Sentinel SSm A', 'Sentinel SSm B', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-    max-width: 700px;
+    max-width: 800px;
     width: 95%;
     margin: 0 auto;
 }
@@ -14,4 +18,12 @@ article p {
 
 article img {
     max-width: 100%;
+}
+
+.intro {
+    height: 140px;
+}
+
+.summarly-header {
+    width: 800px;
 }

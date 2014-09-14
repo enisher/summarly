@@ -61,6 +61,8 @@ public class LexRankSummarizationService implements SummarizationService {
         List<RankedSentence> rankedText = ranker.rank(text);
         rankedText = modifyRank(rankedText);
 
+        rankedText = preFilter.removeSimilarSentences(rankedText);
+
         long finish = System.currentTimeMillis();
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
