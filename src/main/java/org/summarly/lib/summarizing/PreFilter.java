@@ -36,7 +36,7 @@ public class PreFilter {
             RankedSentence current = iterator.next();
 
             boolean matchedWithPrevious = false;
-            for (int prevPos = currentPosition - 1; prevPos >= 0 && prevPos > currentPosition - 3; prevPos--) {
+            for (int prevPos = currentPosition - 1; prevPos >= 0 && prevPos > currentPosition - 4; prevPos--) {
                 matchedWithPrevious |= !checkThreshold(threshold, current, sentences.get(prevPos));
             }
 
