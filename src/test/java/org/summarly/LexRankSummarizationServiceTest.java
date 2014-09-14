@@ -56,4 +56,17 @@ public class LexRankSummarizationServiceTest {
         System.out.println(summary.size());
         summary.forEach(out::println);
     }
+
+
+    @Test
+    public void testProcessAnotherHabrArticle() throws Exception {
+        TextReader reader = new TextReader();
+        String source = reader.readTextFromURL("http://www.stopfake.org/kanal-rossiya-24-snyal-eksklyuzivnyj-miting-kotoryj-sam-zhe-i-srezhissiroval/");
+
+        LexRankSummarizationService summarizer = new LexRankSummarizationService();
+
+        List<String> summary = summarizer.summarise(source, 0.5);
+        System.out.println(summary.size());
+        summary.forEach(out::println);
+    }
 }

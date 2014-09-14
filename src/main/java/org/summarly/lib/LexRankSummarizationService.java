@@ -47,7 +47,7 @@ public class LexRankSummarizationService implements SummarizationService {
         PreFilter preFilter = new PreFilter();
         s = preFilter.filterBrackets(s);
 
-        switch (lang){
+        switch (lang) {
             case "en":
                 text = enSplitter.split(s, "");
                 break;
