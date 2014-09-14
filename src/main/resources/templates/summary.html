@@ -11,6 +11,10 @@
     <script type="text/javascript" th:src="@{/js/application.js}"></script>
 </head>
 <body>
+<h2 class="title" th:text="${title}"></h2>
+<img class="image" th:src="${image}"/>
+<article>
     <p class="article" th:each="p : ${paragraphs}" th:text="${p}"></p>
+</article>
 </body>
 </html>
