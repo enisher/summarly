@@ -86,7 +86,7 @@
             <artifactId>lucene-core</artifactId>
             <version>4.9.0</version>
         </dependency>
-
+        
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
@@ -97,12 +97,6 @@
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
             <version>4.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.l3s.boilerpipe</groupId>
-            <artifactId>boilerpipe</artifactId>
-            <version>1.2.0</version>
         </dependency>
 
         <dependency>
@@ -121,11 +115,6 @@
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
             <version>1.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.juniversalchardet</groupId>
-            <artifactId>juniversalchardet</artifactId>
-            <version>1.0.3</version>
         </dependency>
     </dependencies>
 

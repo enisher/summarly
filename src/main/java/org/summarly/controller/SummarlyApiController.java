@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.summarly.lib.UnsupportedLanguageException;
+import org.summarly.lib.common.Article;
 import org.summarly.lib.common.TextReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.summarly.lib.SummarizationService;
@@ -40,10 +41,12 @@ public class SummarlyApiController {
         log.info("Received article url: " + url);
 
         TextReader reader = new TextReader();
-        String articleText = reader.readTextFromURL(url);
+        Article article = reader.readTextFromURL(url);
 
         ModelAndView modelAndView = new ModelAndView("summary");
-        modelAndView.addObject("body", summarize(articleText));
+        modelAndView.addObject("body", summarize(article.getText()));
+        modelAndView.addObject("title", article.getTitle());
+        modelAndView.addObject("image", article.getKDPVimage());
 
         return modelAndView;
     }

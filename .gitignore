@@ -1,3 +1,7 @@
 *.iml
 .idea/
 target/
+*.prefs
+*.classpath
+*.project
+*.gitignore~HEAD
