@@ -16,5 +16,13 @@ public class QuotesModifierTest {
         Pattern pattern = new QuotesModifier().pattern;
         Assert.assertTrue(pattern.matcher("aaaaa\"bbb").find());
         Assert.assertTrue(pattern.matcher("aaaaa'bbb").find());
+        Assert.assertTrue(pattern.matcher("aaaaa‘bbb").find());
+        Assert.assertTrue(pattern.matcher("aaaaa’bbb").find());
+        Assert.assertTrue(pattern.matcher("aaaaa“bbb").find());
+        Assert.assertTrue(pattern.matcher("aaaaa”bbb").find());
+        Assert.assertTrue(pattern.matcher("aaaaa«bbb").find());
+        Assert.assertTrue(pattern.matcher("aaaaa»bbb").find());
+        Assert.assertTrue(pattern.matcher("aaaaa„bbb").find());
+        Assert.assertTrue(pattern.matcher("aaaaa”bbb").find());
     }
 }
