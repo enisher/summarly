@@ -7,6 +7,7 @@ import org.summarly.lib.segmentation.StanfordNLPSplitter;
 import org.summarly.lib.segmentation.TextSplitter;
 import org.summarly.lib.summarizing.Filter;
 import org.summarly.lib.summarizing.LexRankRanker;
+import org.summarly.lib.summarizing.PreFilter;
 import org.summarly.lib.summarizing.modifiers.RankModifier;
 import org.summarly.lib.summarizing.Ranker;
 
@@ -43,6 +44,8 @@ public class LexRankSummarizationService implements SummarizationService {
 
         LanguageIdentifier languageIdentifier = new  LanguageIdentifier(s);
         String lang = languageIdentifier.getLanguage();
+        PreFilter preFilter = new PreFilter();
+        s = preFilter.filterBrackets(s);
 
         if (lang.equals("en")){
             text = enSplitter.split(s, "");
