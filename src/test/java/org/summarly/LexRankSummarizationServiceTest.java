@@ -1,5 +1,6 @@
 package org.summarly;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.summarly.lib.LexRankSummarizationService;
 import org.summarly.lib.common.TextReader;
@@ -21,6 +22,7 @@ public class LexRankSummarizationServiceTest {
 
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
         List<String> summary = summarizer.summarise(s, 0.5);
+        Assert.assertFalse(summary.isEmpty());
         summary.forEach(out::println);
     }
 
@@ -32,6 +34,7 @@ public class LexRankSummarizationServiceTest {
 
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
         List<String> summary = summarizer.summarise(s, 0.5);
+        Assert.assertFalse(summary.isEmpty());
         summary.forEach(out::println);
     }
 
@@ -44,6 +47,7 @@ public class LexRankSummarizationServiceTest {
         source = preFilter.filterBrackets(source);
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
         List<String> summary = summarizer.summarise(source, 0.5);
+        Assert.assertFalse(summary.isEmpty());
         summary.forEach(out::println);
     }
 
@@ -53,7 +57,17 @@ public class LexRankSummarizationServiceTest {
         String source = reader.readTextFromURL("http://habrahabr.ru/post/236673/");
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
         List<String> summary = summarizer.summarise(source, 0.5);
-        System.out.println(summary.size());
+        Assert.assertFalse(summary.isEmpty());
+        summary.forEach(out::println);
+    }
+
+    @Test
+    public void testProcessCensorArticle() throws Exception {
+        TextReader reader = new TextReader();
+        String source = reader.readTextFromURL("http://habrahabr.ru/post/234551/");
+        LexRankSummarizationService summarizer = new LexRankSummarizationService();
+        List<String> summary = summarizer.summarise(source, 0.5);
+        Assert.assertFalse(summary.isEmpty());
         summary.forEach(out::println);
     }
 }
