@@ -5,6 +5,7 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
+import org.summarly.lib.Util;
 import org.summarly.lib.common.Sentence;
 import org.summarly.lib.common.Text;
 
@@ -39,11 +40,14 @@ public class StanfordNLPSplitter implements TextSplitter {
         List<Sentence> sentences = new ArrayList<Sentence>(coreMaps.size());
         for (CoreMap coreMap : coreMaps) {
             List<String> words = new ArrayList<String>();
+            int start = coreMap.get(CoreAnnotations.TokensAnnotation.class).get(0).beginPosition();
             for (CoreLabel token : coreMap.get(CoreAnnotations.TokensAnnotation.class)) {
                 String word = token.get(CoreAnnotations.TextAnnotation.class);
                 words.add(word);
             }
+
             Sentence sentence = new Sentence(coreMap.toString());
+            sentence.setParagraphNum(Util.paragraphNumber(start, text));
             sentence.setWords(words);
             sentences.add(sentence);
         }
