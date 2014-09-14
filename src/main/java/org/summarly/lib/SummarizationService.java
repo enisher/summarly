@@ -6,5 +6,5 @@ import java.util.List;
  * @author Anton Chernetskij
  */
 public interface SummarizationService {
-    public List<String> summarise(String text, double ratio) throws UnsupportedLanguageException;
+    public List<String> summarise(String text) throws UnsupportedLanguageException;
 }

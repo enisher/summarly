@@ -140,14 +140,13 @@ public class LexRankRanker implements Ranker {
     }
 
     protected double[][] normalize(double[][] similarities) {
-        for (int i = 0; i < similarities.length; i++) {
-            double[] similarity = similarities[i];
+        for (double[] row : similarities) {
             double sum = 0;
-            for (int j = 0; j < similarity.length; j++) {
-                sum += similarity[j];
+            for (double similarity : row) {
+                sum += similarity;
             }
-            for (int j = 0; j < similarity.length; j++) {
-                similarity[j] = similarity[j] / sum;
+            for (int j = 0; j < row.length; j++) {
+                row[j] = row[j] / sum;
             }
         }
         return similarities;
@@ -185,12 +184,12 @@ public class LexRankRanker implements Ranker {
     protected void normalise(double[] ranks) {
         double max = 0;
         double min = 1;
-        for (int i = 0; i < ranks.length; i++) {
-            if (max < ranks[i]) {
-                max = ranks[i];
+        for (double rank : ranks) {
+            if (max < rank) {
+                max = rank;
             }
-            if (min > ranks[i]) {
-                min = ranks[i];
+            if (min > rank) {
+                min = rank;
             }
         }
         max = max - min;
@@ -200,11 +199,9 @@ public class LexRankRanker implements Ranker {
     }
 
     protected void printArr(double[][] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            double[] doubles = arr[i];
+        for (double[] doubles : arr) {
             StringBuilder builder = new StringBuilder("{");
-            for (int j = 0; j < doubles.length; j++) {
-                double val = doubles[j];
+            for (double val : doubles) {
                 builder.append(String.format("%f ,", val));
             }
             builder.append("},");

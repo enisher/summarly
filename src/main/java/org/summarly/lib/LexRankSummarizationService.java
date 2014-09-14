@@ -42,25 +42,13 @@ public class LexRankSummarizationService implements SummarizationService {
         rankModifiers = Arrays.<RankModifier>asList(text -> text);
     }
 
-    public List<String> summarise(String s, double ratio) throws UnsupportedLanguageException {
+    public List<String> summarise(String s) throws UnsupportedLanguageException {
         long start = System.currentTimeMillis();
         Text text;
 
-        LanguageIdentifier languageIdentifier = new  LanguageIdentifier(s);
-        String lang = languageIdentifier.getLanguage();
         PreFilter preFilter = new PreFilter();
         s = preFilter.filterBrackets(s);
-
-        switch (lang) {
-            case "en":
-                text = enSplitter.split(s, "");
-                break;
-            case "ru":
-                text = ruSplitter.split(s, "");
-                break;
-            default:
-                throw new UnsupportedLanguageException(lang);
-        }
+        text = splitText(s);
 
         if (text.numSentences() < 6) {
             throw new RuntimeException("The text is too small to apply extractive summary");
@@ -73,7 +61,7 @@ public class LexRankSummarizationService implements SummarizationService {
         LOGGER.info(String.format(
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
-        List<Sentence> summary = filter.filter(rankedText, ratio)
+        List<Sentence> summary = filter.filter(rankedText, getRatio(rankedText))
                 .stream().map(RankedSentence::getSentence)
                 .collect(Collectors.<Sentence>toList());
 
@@ -94,11 +82,32 @@ public class LexRankSummarizationService implements SummarizationService {
         return paragraphs;
     }
 
+    private Text splitText(String s) throws UnsupportedLanguageException {
+        Text text;LanguageIdentifier languageIdentifier = new  LanguageIdentifier(s);
+        String lang = languageIdentifier.getLanguage();
+
+        switch (lang) {
+            case "en":
+                text = enSplitter.split(s, "");
+                break;
+            case "ru":
+                text = ruSplitter.split(s, "");
+                break;
+            default:
+                throw new UnsupportedLanguageException(lang);
+        }
+        return text;
+    }
+
     private List<RankedSentence> modifyRank(List<RankedSentence> text) {
         for (RankModifier modifier : rankModifiers) {
             text = modifier.modify(text);
         }
         return text;
+    }
+
+    protected double getRatio(List<RankedSentence> text){
+        return 10.0/(text.size() + 15) + 0.5;
     }
 
     public Ranker getRanker() {
