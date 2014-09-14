@@ -36,7 +36,12 @@ public class LuceneSplitter implements TextSplitter {
     }
 
     private int paragraphNumber(int position, String text) {
-        return 0;
+        int lines = 1;
+        int pos = 0;
+        while ((pos = text.substring(0, position).indexOf("\n", pos) + 1) != 0) {
+            lines++;
+        }
+        return lines;
     }
 
     private List<String> extractNormalizedTokens(String text, Analyzer analyzer) {
@@ -60,7 +65,8 @@ public class LuceneSplitter implements TextSplitter {
                 .map(sentence -> {
                     sentence.setWords(extractNormalizedTokens(sentence.getText(), new RussianAnalyzer(Version.LUCENE_4_9)));
                     return sentence;
-                }).collect(Collectors.toList());
+                }).filter(sentence -> sentence.getWords().size() > 0)
+                .collect(Collectors.toList());
 
         Text theText = new Text(text);
         theText.setSentences(sentences);

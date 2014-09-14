@@ -49,14 +49,8 @@ public class SummarlyApiController {
     }
 
     private String summarize(String originalText) {
-        List<String> summary = null;
         try {
-            summary = summarizationService.summarise(originalText, 0.5);
-
-            StringBuilder builder = new StringBuilder();
-            summary.stream().forEach(s -> builder.append(s).append(" "));
-
-            return builder.toString();
+            return summarizationService.summarise(originalText, 0.5);
         } catch (UnsupportedLanguageException e) {
             return "Sorry article language is not supported yet. :(";
         }
