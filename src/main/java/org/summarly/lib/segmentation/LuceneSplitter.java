@@ -8,6 +8,7 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.util.Version;
 import org.summarly.lib.common.Sentence;
 import org.summarly.lib.common.Text;
+import org.summarly.lib.Util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,19 +30,10 @@ public class LuceneSplitter implements TextSplitter {
              end != BreakIterator.DONE;
              start = end, end = iterator.next()) {
             Sentence sentence = new Sentence(text.substring(start, end));
-            sentence.setParagraphNum(paragraphNumber(start, text));
+            sentence.setParagraphNum(Util.paragraphNumber(start, text));
             sentences.add(sentence);
         }
         return sentences;
-    }
-
-    private int paragraphNumber(int position, String text) {
-        int lines = 1;
-        int pos = 0;
-        while ((pos = text.substring(0, position).indexOf("\n", pos) + 1) != 0) {
-            lines++;
-        }
-        return lines;
     }
 
     private List<String> extractNormalizedTokens(String text, Analyzer analyzer) {

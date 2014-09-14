@@ -6,115 +6,80 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
     <link th:href="@{/css/style.css}" rel="stylesheet" media="screen"/>
+    <link th:href="@{/css/docs.min.css}" rel="stylesheet" media="screen"/>
     <script type="text/javascript" src="http://cdn.jsdelivr.net/webjars/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/js/application.js}"></script>
 </head>
 <body>
-<!-- Header -->
-<div th:include="::fragments/header">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Static header</a>
+
+<div class="container summarly-header">
+
+    <div class="jumbotron" style="width: 800px">
+        <div class="intro row-fluid">
+            <div class="inline col-md-3">
+                <img th:src="@{/img/icon-128.png}"/>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                </ul>
+
+            <div class="inline col-md-9">
+                <h1>Summarly</h1>
+            </div>
+        </div>
+
+        <form class="form-inline" action="/summary" id="summarizeForm" method="get" role="form">
+            <div class="form-group">
+                <input style="width: 550px" class="form-control input-lg" type="text" name="url"
+                       placeholder="Provide link to article..."/>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg">Summarize</button>
+        </form>
+
+
+    </div>
+
+    <div class="container" style="width: 800px;">
+        <div class="brief bs-docs-featurette">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h3>Clean Style</h3>
+
+                    <p>We provide simple UI everyone can easily understand.</p>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Only important information</h3>
+
+                    <p>We cut all unimportant information from the article</p>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Ads free</h3>
+
+                    <p>No ads, at all. Forever.</p>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Russian lang support</h3>
+
+                    <p>Yes, we support Russian language :(</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="hero-unit">
-        <h1>Summarly Test Page</h1>
 
-        <p>
-            Insert URL to article page or text itself.
-        </p>
-
-        <p id="response">
-
-        </p>
-
-        <div class="form">
-
-            <label class="radio">
-                <input type="radio" name="summarizeType" value="url" checked="checked"/>
-                By Url
-            </label>
-
-            <label class="radio">
-                <input type="radio" name="summarizeType" value="text"/>
-                By Text
-            </label>
-
-
-            <form id="summarizeForm">
-                <fieldset>
-                    <div class="control-group" id="textData">
-                        <label class="control-label">Article:</label>
-
-                        <div class="controls">
-                            <textarea name="text" placeholder="Insert article here"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="control-group" id="urlData" style="display: none">
-                        <label class="control-label">URL:</label>
-
-                        <input type="text" name="url"/>
-                    </div>
-
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-    <div th:include="::fragments/footer">&copy; 2014 The Static Templates</div>
+    <footer class="container" style="width: 800px">
+        <ul class="bs-docs-footer-links muted center">
+            <li>Version: 0.1.0</li>
+            <li>·</li>
+            <li><a href="https://github.com/enisher/summarly">GitHub</a></li>
+            <li>·</li>
+            <li><a href="/examples">Examples</a></li>
+            <li>·</li>
+            <li><a href="/about">About</a></li>
+            <li>·</li>
+            <li><a href="https://github.com/enisher/summarly/issues?state=open">Issues</a></li>
+            <li>·</li>
+            <li><a href="https://github.com/enisher/summarly/releases">Releases</a></li>
+        </ul>
+    </footer>
 </div>
 
-<script type="text/javascript">
-    $(function () {
-        $('input[name=summarizeType]').on('change', function (e) {
-            switchSummarizeType($(this).val());
-        });
-
-        switchSummarizeType("url");
-
-        $('#summarizeForm').on('submit', function (e) {
-            e.preventDefault();
-            if ($('input[name=summarizeType]:checked').val() == 'url') {
-                $.ajax({
-                    url: '/summary',
-                    type: 'get',
-                    data: { url: $('input[name=url]').val() },
-                    success: function (htmlData) {
-                        $('#response').html(htmlData);
-                    }
-                })
-            } else {
-                $.ajax({
-                    url: '/summary',
-                    type: 'post',
-                    data: { text: $('textarea[name=text]').val() },
-                    success: function (htmlData) {
-                        $('#response').html(htmlData);
-                    }
-                })
-            }
-        });
-
-        function switchSummarizeType(summarizeType) {
-            if (summarizeType == 'url') {
-                $('#textData').hide();
-                $('#urlData').show();
-            } else {
-                $('#textData').show();
-                $('#urlData').hide();
-            }
-        }
-    });
-</script>
 </body>
 </html>

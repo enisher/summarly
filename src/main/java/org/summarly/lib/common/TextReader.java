@@ -68,17 +68,16 @@ public class TextReader {
             article.setTitle(doc.getTitle());
             article.setText(ArticleExtractor.INSTANCE.getText(doc));
 
-            List<Image> images = ImageExtractor.INSTANCE.process(new URL(url), CommonExtractors.KEEP_EVERYTHING_EXTRACTOR);
+            List<Image> images = ImageExtractor.INSTANCE.process(new URL(url), CommonExtractors.ARTICLE_EXTRACTOR);
+
             Collections.sort(images);
-            String image = null;
-            if (!images.isEmpty()) {
+            if(!images.isEmpty()){
                 String imgSrc = images.get(0).getSrc();
                 if (!imgSrc.startsWith("http:")) {
                     imgSrc = "http:" + imgSrc;
                 }
                 article.setKDPVimage(new URL(imgSrc));
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
