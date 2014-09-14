@@ -1,5 +1,7 @@
 package org.summarly.lib;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.summarly.lib.common.RankedSentence;
 import org.summarly.lib.common.Text;
 import org.summarly.lib.segmentation.LuceneSplitter;
@@ -15,7 +17,6 @@ import org.summarly.lib.common.Sentence;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.tika.language.LanguageIdentifier;
@@ -25,7 +26,8 @@ import org.apache.tika.language.LanguageIdentifier;
  */
 public class LexRankSummarizationService implements SummarizationService {
 
-    private static final Logger LOGGER = Logger.getLogger(LexRankSummarizationService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(LexRankSummarizationService.class);
+
     private Ranker ranker;
     private TextSplitter enSplitter;
     private TextSplitter ruSplitter;
@@ -72,15 +74,15 @@ public class LexRankSummarizationService implements SummarizationService {
                 "Processed text of %d sentences in %d ms", text.numSentences(), (finish - start)));
 
         List<Sentence> summary = filter.filter(rankedText, ratio)
-                .stream().map(p -> p.getSentence())
+                .stream().map(RankedSentence::getSentence)
                 .collect(Collectors.<Sentence>toList());
 
         List<String> paragraphs = new ArrayList<String>();
         StringBuilder builder = new StringBuilder();
         int currentParagraph = 0;
-        for (Sentence sentence : summary){
+        for (Sentence sentence : summary) {
             builder.append(sentence.getText());
-            if (sentence.getParagraphNum() != currentParagraph){
+            if (sentence.getParagraphNum() != currentParagraph) {
                 currentParagraph = sentence.getParagraphNum();
                 paragraphs.add(builder.toString());
                 builder.setLength(0);
@@ -92,7 +94,7 @@ public class LexRankSummarizationService implements SummarizationService {
         return paragraphs;
     }
 
-    private List<RankedSentence> modifyRank(List<RankedSentence> text){
+    private List<RankedSentence> modifyRank(List<RankedSentence> text) {
         for (RankModifier modifier : rankModifiers) {
             text = modifier.modify(text);
         }
