@@ -65,8 +65,7 @@ public class LexRankSummarizationServiceTest {
 
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
 
-        List<String> summary = summarizer.summarise(source, 0.5);
-        System.out.println(summary.size());
-        summary.forEach(out::println);
+        String summary = summarizer.summarise(source, 0.5);
+        System.out.println(summary);
     }
 }
