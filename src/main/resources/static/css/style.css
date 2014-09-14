@@ -22,6 +22,7 @@ article img {
 
 .intro {
     height: 140px;
+
 }
 
 .summarly-header {
@@ -31,4 +32,14 @@ article img {
 .brief-icon {
     width: 100px;
     margin-left: 40px;
+}
+
+#summarizeForm {
+    margin-top: 20px;
+}
+
+#summaryHeading {
+    font-size: 83px;
+    font-family: "Georgia", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-right: 20px;
 }
