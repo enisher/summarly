@@ -31,8 +31,8 @@ public class FilterTest {
         List<RankedSentence> result = filter.filter(text, 0.3);
 
         Assert.assertEquals(3, result.size());
-        Assert.assertEquals("b", result.get(0).getSentence().getSentence());
-        Assert.assertEquals("f", result.get(1).getSentence().getSentence());
-        Assert.assertEquals("h", result.get(2).getSentence().getSentence());
+        Assert.assertEquals("b", result.get(0).getSentence().getText());
+        Assert.assertEquals("f", result.get(1).getSentence().getText());
+        Assert.assertEquals("h", result.get(2).getSentence().getText());
     }
 }
