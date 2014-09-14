@@ -32,7 +32,7 @@ public class SummarlyApiController {
         log.info("Received article text: " + text);
 
         ModelAndView modelAndView = new ModelAndView("summary");
-        modelAndView.addObject("body", summarize(text));
+        modelAndView.addObject("paragraphs", summarize(text));
 
         return modelAndView;
     }
@@ -45,7 +45,7 @@ public class SummarlyApiController {
         Article article = reader.readTextFromURL(url);
 
         ModelAndView modelAndView = new ModelAndView("summary");
-        modelAndView.addObject("body", summarize(article.getText()));
+        modelAndView.addObject("paragraphs", summarize(article.getText()));
         modelAndView.addObject("title", article.getTitle());
         modelAndView.addObject("image", article.getKDPVimage());
 

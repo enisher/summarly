@@ -51,7 +51,7 @@ public class LexRankSummarizationServiceTest {
     @Test
     public void testProcessHabrArticle() throws Exception {
         TextReader reader = new TextReader();
-        String s = reader.readTextFromURL("http://habrahabr.ru/post/236673/");
+        String s = reader.readTextFromURL("http://habrahabr.ru/post/236673/").getText();
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
         List<String> summary = summarizer.summarise(s, 0.5);
         summary.forEach(out::println);
@@ -61,7 +61,7 @@ public class LexRankSummarizationServiceTest {
     @Test
     public void testProcessAnotherHabrArticle() throws Exception {
         TextReader reader = new TextReader();
-        String s = reader.readTextFromURL("http://www.stopfake.org/kanal-rossiya-24-snyal-eksklyuzivnyj-miting-kotoryj-sam-zhe-i-srezhissiroval/");
+        String s = reader.readTextFromURL("http://www.stopfake.org/kanal-rossiya-24-snyal-eksklyuzivnyj-miting-kotoryj-sam-zhe-i-srezhissiroval/").getText();
 
         LexRankSummarizationService summarizer = new LexRankSummarizationService();
 
