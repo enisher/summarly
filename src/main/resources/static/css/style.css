@@ -15,3 +15,11 @@ article p {
 article img {
     max-width: 100%;
 }
+
+.intro {
+    height: 140px;
+}
+
+.summarly-header {
+    width: 800px;
+}
